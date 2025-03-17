@@ -19,7 +19,7 @@ def generate_dna_sequences(n, m, min_hamming=4, max_gc = 70, max_trials=100000):
 
     while len(sequences) < n and trials < max_trials:
         candidate = generate_random_sequence(m)
-        if any([has_homotrimer(candidate), gc_content(candidate) > max_gc]):
+        if any([has_homotrimer(candidate), gc_content(candidate) > max_gc, candidate[:2] == 'GG']):
             trials += 1
             continue
         if all(hamming_distance(candidate, existing) >= min_hamming for existing in sequences):
@@ -42,7 +42,10 @@ def generate_dna_sequences(n, m, min_hamming=4, max_gc = 70, max_trials=100000):
 # Example usage
 n = 20  # number of sequences
 m = 8   # length of each sequence
-sequences = generate_dna_sequences(n, m)
+min_hamming = 4
+max_gc = 70
+
+sequences = generate_dna_sequences(n, m, min_hamming = min_hamming, max_gc = max_gc)
 
 for i, seq in enumerate(sequences):
     print(f"Seq{i+1}: {seq}")
